@@ -1,0 +1,10 @@
+//
+// PLACE ANY BUILD DEFINITIONS IN THIS FILE AND THEY WILL BE 
+// PICKED UP DURING THE APP BUILD FOR YOUR MODULE
+//
+// see the following webpage for instructions on the settings
+// for this file:
+// https://developer.apple.com/library/content/featuredarticles/XcodeConcepts/Concept-Build_Settings.html
+// 
+
+OTHER_LDFLAGS=$(inherited) -weak_framework AuthenticationServices

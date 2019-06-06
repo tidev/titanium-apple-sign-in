@@ -1,0 +1,18 @@
+#
+# this is your module manifest and used by Titanium
+# during compilation, packaging, distribution, etc.
+#
+version: 1.0.0
+apiversion: 2
+architectures: armv7 arm64 i386 x86_64
+description: titanium-apple-sign-in is a Swift based Titanium module.
+author: Hans Knöchel
+license: MIT
+copyright: Copyright (c) 2019 by Hans Knöchel
+
+# these should not be edited
+name: titanium-apple-sign-in
+moduleid: ti.applesignin
+guid: cb40d586-ff2c-483e-8fac-69d1e82bd94c
+platform: iphone
+minsdk: 8.0.0
