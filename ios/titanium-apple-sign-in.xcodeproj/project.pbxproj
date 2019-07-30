@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3A2FE57222AB46BD0033BDE6 /* TiApplesigninLoginButtonProxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2FE57122AB46BD0033BDE6 /* TiApplesigninLoginButtonProxy.swift */; };
+		3A2FE57422AB46CB0033BDE6 /* TiApplesigninLoginButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A2FE57322AB46CB0033BDE6 /* TiApplesigninLoginButton.swift */; };
 		DB34CDE0207B998A005F8E8C /* TiApplesigninModuleAssets.m in Sources */ = {isa = PBXBuildFile; fileRef = DB34CDDE207B998A005F8E8C /* TiApplesigninModuleAssets.m */; };
 		DB34CDE1207B998A005F8E8C /* TiApplesigninModuleAssets.h in Headers */ = {isa = PBXBuildFile; fileRef = DB34CDDF207B998A005F8E8C /* TiApplesigninModuleAssets.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		DB34CDE6207B9EBD005F8E8C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DB34CDE5207B9EBD005F8E8C /* Foundation.framework */; };
@@ -16,6 +18,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3A2FE57122AB46BD0033BDE6 /* TiApplesigninLoginButtonProxy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TiApplesigninLoginButtonProxy.swift; path = Classes/TiApplesigninLoginButtonProxy.swift; sourceTree = "<group>"; };
+		3A2FE57322AB46CB0033BDE6 /* TiApplesigninLoginButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TiApplesigninLoginButton.swift; path = Classes/TiApplesigninLoginButton.swift; sourceTree = "<group>"; };
 		DB34CDDE207B998A005F8E8C /* TiApplesigninModuleAssets.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TiApplesigninModuleAssets.m; path = Classes/TiApplesigninModuleAssets.m; sourceTree = SOURCE_ROOT; };
 		DB34CDDF207B998A005F8E8C /* TiApplesigninModuleAssets.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TiApplesigninModuleAssets.h; path = Classes/TiApplesigninModuleAssets.h; sourceTree = SOURCE_ROOT; };
 		DB34CDE5207B9EBD005F8E8C /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -56,6 +60,8 @@
 			isa = PBXGroup;
 			children = (
 				DB52E2421E9CD0F800AAAEE0 /* TiApplesigninModule.swift */,
+				3A2FE57122AB46BD0033BDE6 /* TiApplesigninLoginButtonProxy.swift */,
+				3A2FE57322AB46CB0033BDE6 /* TiApplesigninLoginButton.swift */,
 			);
 			name = Sources;
 			sourceTree = "<group>";
@@ -178,6 +184,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				DB34CDE0207B998A005F8E8C /* TiApplesigninModuleAssets.m in Sources */,
+				3A2FE57422AB46CB0033BDE6 /* TiApplesigninLoginButton.swift in Sources */,
+				3A2FE57222AB46BD0033BDE6 /* TiApplesigninLoginButtonProxy.swift in Sources */,
 				DB52E2431E9CD0F800AAAEE0 /* TiApplesigninModule.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
