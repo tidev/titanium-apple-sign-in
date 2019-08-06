@@ -1,0 +1,45 @@
+{
+  "name": "@titanium/ti.applesignin",
+  "version": "1.0.0",
+  "description": "titanium-apple-sign-in is a Swift based Titanium module.",
+  "scripts": {
+    "test": "karma start test/unit/karma.unit.config.js",
+    "test:ios": "npm test -- --browsers ios"
+  },
+  "author": "Hans Knöchel",
+  "license": "MIT",
+  "keywords": [
+    "ti.applesignin",
+    "titanium",
+    "apple",
+    "signin"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+git@github.com:appcelerator-modules/titanium-apple-sign-in.git"
+  },
+  "bugs": {
+    "url": "https://github.com/appcelerator-modules/titanium-apple-sign-in/issues"
+  },
+  "homepage": "https://github.com/appcelerator-modules/titanium-apple-sign-in#readme",
+  "titanium": {
+    "type": "native-module",
+    "platform": "ios"
+  },
+  "devDependencies": {
+    "@seadub/danger-plugin-dependencies": "^0.1.0",
+    "@seadub/danger-plugin-junit": "^0.1.1",
+    "danger": "^7.1.0",
+    "eslint": "^5.10.0",
+    "eslint-config-axway": "^4.1.1",
+    "eslint-plugin-jasmine": "^2.10.1",
+    "jasmine-core": "^3.3.0",
+    "karma": "^4.0.0",
+    "karma-jasmine": "^2.0.1",
+    "karma-junit-reporter": "^1.2.0",
+    "karma-mocha-reporter": "^2.2.5",
+    "karma-titanium-launcher": "^0.5.6",
+    "socket.io": "^2.2.0"
+  },
+  "dependencies": {}
+}

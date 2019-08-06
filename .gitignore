@@ -2,6 +2,8 @@
 
 **/.DS_Store
 
+node_modules/
+
 ## Various settings
 *.pbxuser
 !default.pbxuser
@@ -19,11 +21,7 @@ iphone/xcuserdata/
 *.xcscmblueprint
 ios/metadata.json
 ios/build/
-ios/ti.darkmode.xcodeproj/project.xcworkspace/xcuserdata/
-ios/ti.darkmode-iphone-*.zip
-android/build
-android/dist/ti.aws-android-*.zip
-android/.gradle
 ios/dist
-ios/titanium-darkmode.xcodeproj/xcuserdata/
+ios/titanium-apple-sign-in.xcodeproj/xcuserdata/
+ios/titanium-apple-sign-in.xcodeproj/project.xcworkspace/xcuserdata/
 *.xcuserstate
