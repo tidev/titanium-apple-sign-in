@@ -4,6 +4,8 @@
 
 node_modules/
 
+TESTS-*.xml
+
 ## Various settings
 *.pbxuser
 !default.pbxuser
