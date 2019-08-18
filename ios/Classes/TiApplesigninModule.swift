@@ -28,6 +28,14 @@ class TiApplesigninModule: TiModule {
 
   @objc let BUTTON_STYLE_BLACK = ButtonStyle.black
   
+  @objc let CREDENTIAL_STATE_AUTHORIZED = ASAuthorizationAppleIDProvider.CredentialState.authorized
+
+  @objc let CREDENTIAL_STATE_NOT_FOUND = ASAuthorizationAppleIDProvider.CredentialState.notFound
+
+  @objc let CREDENTIAL_STATE_REVOKED = ASAuthorizationAppleIDProvider.CredentialState.revoked
+
+  @objc let CREDENTIAL_STATE_TRANSFERRED = ASAuthorizationAppleIDProvider.CredentialState.transferred
+
   // MARK: Proxy configuration
 
   func moduleGUID() -> String {
@@ -58,6 +66,19 @@ class TiApplesigninModule: TiModule {
     authorizationController.delegate = self
     authorizationController.performRequests()
   }
+  
+  @available(iOS 13.0, *)
+  @objc(getCredentialState:)
+  func getCredentialState(arguments: Array<Any>?) {
+    guard let arguments = arguments,
+      arguments.count == 2,
+      let userId = arguments.first as? String,
+      let callback = arguments[2] as? KrollCallback else { return }
+
+    ASAuthorizationAppleIDProvider().getCredentialState(forUserID: userId) { (credentialState, error) in
+      callback.call([["state": credentialState]], thisObject: self)
+    }
+  }
 }
 
 // MARK: ASAuthorizationControllerDelegate
@@ -87,8 +108,9 @@ extension TiApplesigninModule: ASAuthorizationControllerDelegate {
 
     var profile: [String: Any] = [
       "email": email,
+      "userId": credential.user,
       "state": credential.state ?? "",
-      "isRealUser": credential.realUserStatus == .likelyReal,
+      "realUserStatus": credential.realUserStatus.rawValue,
       "name": [
         "firstName": fullName.givenName,
         "middleName": fullName.middleName,

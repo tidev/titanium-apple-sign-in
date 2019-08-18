@@ -30,9 +30,7 @@ var win = Ti.UI.createWindow({
   backgroundColor: '#fff'
 });
 
-var btn = Ti.UI.createButton({
-  title: 'Sign in with Apple'
-});
+var btn = AppleSignIn.createLoginButton({ width: 280, height: 38 });
 
 btn.addEventListener('click', function () {
   AppleSignIn.authorize();
@@ -41,6 +39,29 @@ btn.addEventListener('click', function () {
 win.add(btn);
 win.open();
 ```
+
+## API's
+
+### Methods
+
+#### `createLoginButton()`
+
+Creates a new localized login button.
+
+#### `authorize({ scopes })`
+
+Starts an authorization flow with an optional array of scoped. Defaults to all scopes (`fullName` and `email`).
+
+#### `getCredentialState(userId, callback)`
+
+Fetches the current credential state with a given user-id (received from the `event.profile.userId`  key of the `login` event).
+The result is returned to the `state` parameter of the `callback` and can be authorized, revoked, transferred or unknown.
+
+#### Events
+
+#### `login`
+
+The login event with the user's `profile`.
 
 ## Installation
 

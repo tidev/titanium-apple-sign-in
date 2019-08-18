@@ -40,6 +40,10 @@ public class TiApplesigninLoginButton : TiUIView {
     self.addSubview(loginButton!)
   }
   
+  public override func frameSizeChanged(_ frame: CGRect, bounds: CGRect) {
+    TiUtils.setView(loginButton!, positionRect: bounds)
+  }
+  
   @objc func loginButtonTapped() {
     proxy.fireEvent("click")
   }
