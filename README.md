@@ -57,7 +57,7 @@ Starts an authorization flow with an optional array of scoped. Defaults to all s
 Fetches the current credential state with a given user-id (received from the `event.profile.userId`  key of the `login` event).
 The result is returned to the `state` parameter of the `callback` and can be authorized, revoked, transferred or unknown.
 
-#### Events
+### Events
 
 #### `login`
 
