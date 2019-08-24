@@ -16,17 +16,17 @@ class TiApplesigninModule: TiModule {
   
   // MARK: Public constants
   
-  @objc let BUTTON_TYPE_DEFAULT = ButtonType.default.rawValue
+  @objc let BUTTON_TYPE_DEFAULT = ASAuthorizationAppleIDButton.ButtonType.default.rawValue
 
-  @objc let BUTTON_TYPE_CONTINUE = ButtonType.continue.rawValue
+  @objc let BUTTON_TYPE_CONTINUE = ASAuthorizationAppleIDButton.ButtonType.continue.rawValue
 
-  @objc let BUTTON_TYPE_SIGN_IN = ButtonType.signIn.rawValue
+  @objc let BUTTON_TYPE_SIGN_IN = ASAuthorizationAppleIDButton.ButtonType.signIn.rawValue
   
-  @objc let BUTTON_STYLE_WHITE = ButtonStyle.white.rawValue
+  @objc let BUTTON_STYLE_WHITE = ASAuthorizationAppleIDButton.Style.white.rawValue
 
-  @objc let BUTTON_STYLE_WHITE_OUTLINE = ButtonStyle.whiteOutline.rawValue
+  @objc let BUTTON_STYLE_WHITE_OUTLINE = ASAuthorizationAppleIDButton.Style.whiteOutline.rawValue
 
-  @objc let BUTTON_STYLE_BLACK = ButtonStyle.black
+  @objc let BUTTON_STYLE_BLACK = ASAuthorizationAppleIDButton.Style.black
   
   @objc let CREDENTIAL_STATE_AUTHORIZED = ASAuthorizationAppleIDProvider.CredentialState.authorized
 
@@ -66,17 +66,17 @@ class TiApplesigninModule: TiModule {
     authorizationController.delegate = self
     authorizationController.performRequests()
   }
-  
+
   @available(iOS 13.0, *)
   @objc(getCredentialState:)
   func getCredentialState(arguments: Array<Any>?) {
     guard let arguments = arguments,
       arguments.count == 2,
       let userId = arguments.first as? String,
-      let callback = arguments[2] as? KrollCallback else { return }
+      let callback = arguments[1] as? KrollCallback else { return }
 
     ASAuthorizationAppleIDProvider().getCredentialState(forUserID: userId) { (credentialState, error) in
-      callback.call([["state": credentialState]], thisObject: self)
+      callback.call([["state": credentialState.rawValue]], thisObject: self)
     }
   }
 }
@@ -101,25 +101,27 @@ extension TiApplesigninModule: ASAuthorizationControllerDelegate {
   func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
     guard let credential = authorization.credential as? ASAuthorizationAppleIDCredential else { return }
 
-    guard let email = credential.email, let fullName = credential.fullName else {
-      fireEvent("login", with: [["success": false, "cancelled": false, "error": NSLocalizedString("Cannot receive fields", comment: "")]])
-      return;
-    }
-
     var profile: [String: Any] = [
-      "email": email,
       "userId": credential.user,
       "state": credential.state ?? "",
       "realUserStatus": credential.realUserStatus.rawValue,
-      "name": [
+      "authorizedScopes": credential.authorizedScopes.map({ $0.rawValue })
+    ]
+    
+    if let email = credential.email {
+      profile["email"] = email
+    }
+    
+    if let fullName = credential.fullName {
+      profile["name"] = [
         "firstName": fullName.givenName,
         "middleName": fullName.middleName,
         "nickname": fullName.nickname,
         "lastName": fullName.familyName,
         "namePrefix": fullName.namePrefix,
         "nameSuffix": fullName.nameSuffix
-      ],
-    ]
+      ]
+    }
 
     if let identityToken = credential.identityToken {
       profile["identityToken"] = String(data: identityToken, encoding: .utf8)
