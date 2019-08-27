@@ -19,14 +19,14 @@ public class TiApplesigninLoginButton : TiUIView {
     
     let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.loginButtonTapped))
     
-    var type: ButtonType = .default
-    var style: ButtonStyle = .black
+    var type: ASAuthorizationAppleIDButton.ButtonType = .default
+    var style: ASAuthorizationAppleIDButton.Style = .black
 
-    if let proxyType = proxy.value(forKey: "type") as? Int, let authorizationButtonType = ButtonType(rawValue: proxyType) {
+    if let proxyType = proxy.value(forKey: "type") as? Int, let authorizationButtonType = ASAuthorizationAppleIDButton.ButtonType(rawValue: proxyType) {
       type = authorizationButtonType
     }
 
-    if let proxyStyle = proxy.value(forKey: "style") as? Int, let authorizationButtonStyle = ButtonStyle(rawValue: proxyStyle) {
+    if let proxyStyle = proxy.value(forKey: "style") as? Int, let authorizationButtonStyle = ASAuthorizationAppleIDButton.Style(rawValue: proxyStyle) {
       style = authorizationButtonStyle
     }
 
@@ -38,6 +38,10 @@ public class TiApplesigninLoginButton : TiUIView {
     }
 
     self.addSubview(loginButton!)
+  }
+  
+  public override func frameSizeChanged(_ frame: CGRect, bounds: CGRect) {
+    TiUtils.setView(loginButton!, positionRect: bounds)
   }
   
   @objc func loginButtonTapped() {
