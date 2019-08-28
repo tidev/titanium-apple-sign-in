@@ -11,12 +11,12 @@ properties:
   - name: type
     summary: Type for the authorization button.
     type: Number
-    constants: [Module.Applesignin.BUTTON_TYPE_DEFAULT, Module.Applesignin.BUTTON_TYPE_CONTINUE, Module.Applesignin.BUTTON_TYPE_SIGN_IN]
+    constants: [Modules.Applesignin.BUTTON_TYPE_DEFAULT, Modules.Applesignin.BUTTON_TYPE_CONTINUE, Modules.Applesignin.BUTTON_TYPE_SIGN_IN]
 
   - name: style
     summary: Style for the authorization button.
     type: Number
-    constants: [Module.Applesignin.BUTTON_STYLE_WHITE, Module.Applesignin.BUTTON_STYLE_WHITE_OUTLINE, Module.Applesignin.BUTTON_STYLE_BLACK]
+    constants: [Modules.Applesignin.BUTTON_STYLE_WHITE, Modules.Applesignin.BUTTON_STYLE_WHITE_OUTLINE, Modules.Applesignin.BUTTON_STYLE_BLACK]
 
   - name: borderRadius
     summary: The radius, in points, for the rounded corners on the Apple ID sign-in button.

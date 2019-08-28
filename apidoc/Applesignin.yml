@@ -132,7 +132,7 @@ methods:
   - name: authorize
     summary: Request Apple ID authorization.
     description: |
-        After authorizarion it will fire event <Applesignin.login> event which tells success or failure of login.
+        After authorizarion it will fire event <Modules.Applesignin.login> event which tells success or failure of login.
     parameters:
       - name: scopes
         summary: The contact information to be requested from the user during authentication.
@@ -147,7 +147,7 @@ methods:
         reused. To cancel all outstanding tasks, call `invalidateAndCancel` instead.
      parameters:
       - name: userId
-        summary: A string, <Module.Applesignin.ProfileObject.userId>, associated with the Apple ID that your app receives in <Module.Applesignin.login> event.
+        summary: A string, <Modules.Applesignin.ProfileObject.userId>, associated with the Apple ID that your app receives in <Modules.Applesignin.login> event.
         type: String   
       - name: callback
         summary: Function to invoke on success or failure.
@@ -242,10 +242,10 @@ properties:
 name: CredentialStateResponse
 summary: |
     Simple object returned in the callback from the
-    [getCredentialState](Module.Applesignin.getCredentialState) method.
+    [getCredentialState](Modules.Applesignin.getCredentialState) method.
 properties:
   - name: state
     summary: Possible values for the credential state of a user.
     type: Number
-    constants: [Module.Applesignin.CREDENTIAL_STATE_REVOKED, Module.Applesignin.CREDENTIAL_STATE_AUTHORIZED, Module.Applesignin.CREDENTIAL_STATE_NOT_FOUNFD]
+    constants: [Modules.Applesignin.CREDENTIAL_STATE_REVOKED, Modules.Applesignin.CREDENTIAL_STATE_AUTHORIZED, Modules.Applesignin.CREDENTIAL_STATE_NOT_FOUNFD]
 
