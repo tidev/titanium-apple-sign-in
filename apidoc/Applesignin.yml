@@ -145,7 +145,7 @@ methods:
         new tasks cannot be created in the session, but existing tasks continue until completion. Once
         invalidated, references to the events and callback objects are broken. Session objects cannot be
         reused. To cancel all outstanding tasks, call `invalidateAndCancel` instead.
-     parameters:
+    parameters:
       - name: userId
         summary: A string, <Modules.Applesignin.ProfileObject.userId>, associated with the Apple ID that your app receives in <Modules.Applesignin.login> event.
         type: String   
