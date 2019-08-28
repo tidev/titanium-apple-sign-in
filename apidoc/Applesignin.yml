@@ -1,0 +1,251 @@
+---
+name: Modules.Applesignin
+summary: |
+    A module to use apple signin functionality.
+description: |
+    ### Apple sign in Resources
+      - [Sign In with Apple](https://developer.apple.com/sign-in-with-apple/)
+      - [Introducing Sign In with Apple  at WWDC17](https://developer.apple.com/videos/play/wwdc2019/706/)
+
+    ### Requirements
+
+      - iOS 13 and later
+
+    ### Getting Started
+
+    ### Configure iOS: Capabilities and Provisioning Profiles
+    
+    -   Required capabilities:
+      
+            <key>com.apple.developer.applesignin</key>
+            <array>
+              <string>Default</string>
+            </array>
+
+    -   Provisioning Profile entitled with 'Sign In with Apple' capability
+
+
+    ### Accessing the Module
+
+    -   Use `require` to access this module from JavaScript:
+
+            var AppleSignin = require('ti.applesignin');
+
+        The `AppleSignin` variable is a reference to the Module object.
+
+    ### Example applications
+    
+    -   Example applications are located in the `example/ios` folder of the module:
+        
+extends: Titanium.Module
+since: "1.0.0"
+osver: {ios: {min: "13.0"}}
+platforms: [iphone, iPad]
+
+properties:
+
+  - name: BUTTON_TYPE_DEFAULT
+    summary: Default authorization button type. Use with <Modules.Applesignin.LoginButton.type>.
+    type: Number
+    permission: read-only
+    since: "1.0.0"
+
+  - name: BUTTON_TYPE_CONTINUE
+    summary: Continue authorization button type. Use with <Modules.Applesignin.LoginButton.type>.
+    type: Number
+    permission: read-only
+    since: "1.0.0"
+
+  - name: BUTTON_TYPE_SIGN_IN
+    summary: Signin authorization button type. Use with <Modules.Applesignin.LoginButton.type>.
+    type: Number
+    permission: read-only
+    since: "1.0.0"
+
+  - name: BUTTON_STYLE_WHITE
+    summary: Authorization button style white. Use with <Modules.Applesignin.LoginButton.style>.
+    type: Number
+    permission: read-only
+    since: "1.0.0"
+
+  - name: BUTTON_STYLE_WHITE_OUTLINE
+    summary: Authorization button style white outline. Use with <Modules.Applesignin.LoginButton.style>.
+    type: Number
+    permission: read-only
+    since: "1.0.0"
+
+  - name: BUTTON_STYLE_BLACK
+    summary: Authorization button style black. Use with <Modules.Applesignin.LoginButton.style>.
+    type: Number
+    permission: read-only
+    since: "1.0.0"
+
+  - name: AUTHORIZATION_SCOPE_FULLNAME
+    summary: A scope that includes the user’s full name.
+    type: Number
+    permission: read-only
+    since: "1.0.0"
+
+  - name: AUTHORIZATION_SCOPE_EMAIL
+    summary: A scope that includes the user’s email address.
+    type: Number
+    permission: read-only
+    since: "1.0.0"
+
+  - name: CREDENTIAL_STATE_REVOKED
+    summary: Authorization for the given user has been revoked.
+    type: Number
+    permission: read-only
+    since: "1.0.0"
+
+  - name: CREDENTIAL_STATE_AUTHORIZED
+    summary: The user is authorized.
+    type: Number
+    permission: read-only
+    since: "1.0.0"
+
+  - name: CREDENTIAL_STATE_NOT_FOUNFD
+    summary: The user can’t be found.
+    type: Number
+    permission: read-only
+    since: "1.0.0"
+
+  - name: USER_DETECTION_STATUS_REAL
+    summary: The user appears to be a real person.
+    type: Number
+    permission: read-only
+    since: "1.0.0"
+
+  - name: USER_DETECTION_STATUS_UNSUPPORTED
+    summary: The system can’t determine this user’s status as a real person.
+    type: Number
+    permission: read-only
+    since: "1.0.0"
+
+  - name: USER_DETECTION_STATUS_UNKNOWN
+    summary: The system hasn’t determined whether the user might be a real person.
+    type: Number
+    permission: read-only
+    since: "1.0.0"
+
+methods:
+  - name: authorize
+    summary: Request Apple ID authorization.
+    description: |
+        After authorizarion it will fire event <Applesignin.login> event which tells success or failure of login.
+    parameters:
+      - name: scopes
+        summary: The contact information to be requested from the user during authentication.
+        type: Array<Modules.Applesignin.AUTHORIZATION_SCOPE_*>
+
+  - name: getCredentialState
+    summary: Returns the credential state for the given user.
+    description: |
+        This method returns immediately without waiting for tasks to finish. Once a session is invalidated,
+        new tasks cannot be created in the session, but existing tasks continue until completion. Once
+        invalidated, references to the events and callback objects are broken. Session objects cannot be
+        reused. To cancel all outstanding tasks, call `invalidateAndCancel` instead.
+     parameters:
+      - name: userId
+        summary: A string, <Module.Applesignin.ProfileObject.userId>, associated with the Apple ID that your app receives in <Module.Applesignin.login> event.
+        type: String   
+      - name: callback
+        summary: Function to invoke on success or failure.
+        type: Callback<CredentialStateResponse>
+events:
+
+  - name: login
+    summary: Fired at login.
+    properties:
+      - name: success
+        summary: |
+            Indicates if the user was logged in successfully.
+            Returns `true` if request succeeded, `false` otherwise.
+        type: Boolean
+
+      - name: cancelled
+        summary: |
+            Indicates if the user cancelled the login request by closing the dialog.
+        type: Boolean
+
+      - name: error
+        summary: |
+            Error message, if any returned. Will be undefined if `success` is `true`.
+        type: String
+
+      - name: profile
+        summary: User profile returned after successful login.
+        type: ProfileObject
+
+---
+name: ProfileObject
+summary: Dictionary of parameter recieved after successful login.
+platforms: [iphone, ipad]
+since: "1.0.0"
+properties:
+  - name: userId
+    summary: An identifier associated with the authenticated user.
+    type: String
+  - name: email
+    summary: The user’s email address.
+    type: String
+  - name: state
+    summary: A string that your app provided to the request that generated the credential.
+    type: String
+  - name: realUserStatus
+    summary: Possible values for the real user indicator.
+    type: Number
+  - name: authorizedScopes
+    summary: This value will contain a list of scopes for which the user provided authorization.
+    type: Array<String>
+  - name: identityToken
+    summary: Web Token that securely communicates information about the user to your app.
+    type: String
+  - name: authorizationCode
+    summary: A short-lived token used by your app for proof of authorization when interacting with the app’s server counterpart.
+    type: String
+  - name: name
+    summary: Name of user.
+    type: PersonName
+ 
+---
+name: PersonName
+summary: Full name of user.
+platforms: [iphone, ipad]
+since: "1.0.0"
+properties:
+  - name: firstName
+    summary: Name bestowed upon an individual to differentiate them from other members of a group that share a family name (for example, “Johnathan”).
+    type: String
+
+  - name: middleName
+    summary: Secondary name bestowed upon an individual to differentiate them from others that have the same given name (for example, “Maple”).
+    type: String
+
+  - name: lastName
+    summary: Name bestowed upon an individual to denote membership in a group or family. (for example, “Appleseed”).
+    type: String
+
+  - name: nickname
+    summary: Name substituted for the purposes of familiarity (for example, "Johnny").
+    type: String
+
+  - name: namePrefix
+    summary: The portion of a name’s full form of address that precedes the name itself (for example, “Dr.,” “Mr.,” “Ms.”).
+    type: String
+
+  - name: nameSuffix
+    summary: The portion of a name’s full form of address that follows the name itself (for example, “Esq.,” “Jr.,” “Ph.D.”).
+    type: String
+
+---
+name: CredentialStateResponse
+summary: |
+    Simple object returned in the callback from the
+    [getCredentialState](Module.Applesignin.getCredentialState) method.
+properties:
+  - name: state
+    summary: Possible values for the credential state of a user.
+    type: Number
+    constants: [Module.Applesignin.CREDENTIAL_STATE_REVOKED, Module.Applesignin.CREDENTIAL_STATE_AUTHORIZED, Module.Applesignin.CREDENTIAL_STATE_NOT_FOUNFD]
+

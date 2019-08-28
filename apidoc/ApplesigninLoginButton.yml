@@ -1,0 +1,60 @@
+---
+name: Modules.Applesignin.LoginButton
+summary: Built-in login button which can be added on view.
+description: |
+extends: Titanium.UI.View
+since: "1.0.0"
+osver: {ios: {min: "13.0"}}
+platforms: [iphone, ipad]
+
+properties:
+  - name: type
+    summary: Type for the authorization button.
+    type: Number
+    constants: [Module.Applesignin.BUTTON_TYPE_DEFAULT, Module.Applesignin.BUTTON_TYPE_CONTINUE, Module.Applesignin.BUTTON_TYPE_SIGN_IN]
+
+  - name: style
+    summary: Style for the authorization button.
+    type: Number
+    constants: [Module.Applesignin.BUTTON_STYLE_WHITE, Module.Applesignin.BUTTON_STYLE_WHITE_OUTLINE, Module.Applesignin.BUTTON_STYLE_BLACK]
+
+  - name: borderRadius
+    summary: The radius, in points, for the rounded corners on the Apple ID sign-in button.
+    type: Number
+
+examples:
+
+  - title: Login button to signin 
+    example: |
+
+        var AppleSignin = require('ti.applesignin');
+
+        var win = Ti.UI.createWindow({
+            backgroundColor: '#fff'
+        });
+
+        var signInButton = AppleSignin.createLoginButton({
+            type: AppleSignin.BUTTON_TYPE_SIGNIN,
+            style: AppleSignin.BUTTON_STYLE_BLACK,
+            top: 150,
+            height: 50,
+            width: 300,
+            borderRadius: 10
+        });
+
+        signInButton.addEventListener('click', function () {
+            AppleSignin.authorize({
+                scopes: [AppleSignin.AUTHORIZATION_SCOPE_EMAIL, AppleSignin.AUTHORIZATION_SCOPE_FULLNAME]
+            });
+        });
+
+        AppleSignin.addEventListener('login', function (e) {
+            if (e.success === true) {
+                    alert('Login successfully');
+                } else {
+                    alert('Login failed');
+                }
+        });
+
+        win.add(signInButton);
+        win.open();
