@@ -1,10 +1,9 @@
-//
-//  TiApplesigninModule.swift
-//  titanium-apple-sign-in
-//
-//  Created by Your Name
-//  Copyright (c) 2019 Your Company. All rights reserved.
-//
+/**
+* Axway Titanium
+* Copyright (c) 2018-present by Axway Appcelerator. All Rights Reserved.
+* Licensed under the terms of the Apache Public License
+* Please see the LICENSE included with this distribution for details.
+*/
 
 import AuthenticationServices
 import UIKit
@@ -26,7 +25,7 @@ class TiApplesigninModule: TiModule {
 
   @objc let BUTTON_STYLE_WHITE_OUTLINE = ASAuthorizationAppleIDButton.Style.whiteOutline.rawValue
 
-  @objc let BUTTON_STYLE_BLACK = ASAuthorizationAppleIDButton.Style.black
+  @objc let BUTTON_STYLE_BLACK = ASAuthorizationAppleIDButton.Style.black.rawValue
   
   @objc let CREDENTIAL_STATE_AUTHORIZED = ASAuthorizationAppleIDProvider.CredentialState.authorized
 
@@ -35,7 +34,18 @@ class TiApplesigninModule: TiModule {
   @objc let CREDENTIAL_STATE_REVOKED = ASAuthorizationAppleIDProvider.CredentialState.revoked
 
   @objc let CREDENTIAL_STATE_TRANSFERRED = ASAuthorizationAppleIDProvider.CredentialState.transferred
+    
+  @objc let AUTHORIZATION_SCOPE_FULLNAME = ASAuthorization.Scope.fullName
 
+  @objc let AUTHORIZATION_SCOPE_EMAIL = ASAuthorization.Scope.email
+
+  @objc let USER_DETECTION_STATUS_REAL = ASUserDetectionStatus.likelyReal
+    
+  @objc let USER_DETECTION_STATUS_UNSUPPORTED = ASUserDetectionStatus.unsupported
+    
+  @objc let USER_DETECTION_STATUS_UNKNOWN = ASUserDetectionStatus.unknown
+
+    
   // MARK: Proxy configuration
 
   func moduleGUID() -> String {

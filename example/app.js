@@ -7,6 +7,7 @@ AppleSignIn.addEventListener('login', function (event) {
     }
 
     Ti.API.warn(event);
+    alert('Login successfully');
 });
 
 var win = Ti.UI.createWindow({
