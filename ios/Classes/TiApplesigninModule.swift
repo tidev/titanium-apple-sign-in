@@ -99,8 +99,9 @@ extension TiApplesigninModule: ASAuthorizationControllerDelegate {
   @available(iOS 13.0, *)
   func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
     let error = error as NSError
-    
-    if error.code == 1_001 {
+    let cancelErrorCodes = [1_000, 1_001]
+
+    if cancelErrorCodes.contains(error.code) {
       fireEvent("login", with: ["success": false, "cancelled": true])
       return
     }
