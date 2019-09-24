@@ -1,6 +1,6 @@
 {
   "name": "@titanium/ti.applesignin",
-  "version": "1.0.1",
+  "version": "1.1.1",
   "description": "titanium-apple-sign-in is a Swift based Titanium module.",
   "scripts": {
     "test": "karma start test/unit/karma.unit.config.js",
