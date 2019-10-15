@@ -3,20 +3,16 @@
  */
 #import "TiApplesigninModuleAssets.h"
 
-extern NSData* filterDataInRange(NSData* thedata, NSRange range);
+extern NSData *filterDataInRange(NSData *thedata, NSRange range);
 
 @implementation TiApplesigninModuleAssets
 
-- (NSData *)moduleAsset
-{
-  
+- (NSData *)moduleAsset {
 
   return nil;
 }
 
-- (NSData *)resolveModuleAsset:(NSString *)path
-{
-  
+- (NSData *)resolveModuleAsset:(NSString *)path {
 
   return nil;
 }
