@@ -3,8 +3,17 @@
   "version": "1.1.1",
   "description": "titanium-apple-sign-in is a Swift based Titanium module.",
   "scripts": {
-    "test": "karma start test/unit/karma.unit.config.js",
-    "test:ios": "npm test -- --browsers ios"
+    "commit": "git-cz",
+    "format": "npm run format:ios && npm run format:js",
+    "format:ios": "npm run lint:ios -- --fix",
+    "format:js": "npm run lint:js -- --fix",
+    "lint": "npm run lint:android && npm run lint:ios && npm run lint:docs",
+    "lint:docs": "tdoc-validate -w Titanium.Module,Titanium.UI.View,Titanium.Blob,Titanium.Buffer apidoc",
+    "lint:ios": "clang-format-lint ios/**/*.m ios/**/*.h",
+    "lint:js": "eslint .",
+    "test": "npm run lint && npm test",
+    "test:unit": "karma start test/unit/karma.unit.config.js",
+    "test:ios": "npm run test:unit -- --browsers ios"
   },
   "author": "Hans Knöchel",
   "license": "MIT",
@@ -41,5 +50,28 @@
     "karma-titanium-launcher": "^0.7.4",
     "socket.io": "^2.2.0"
   },
-  "dependencies": {}
+  "dependencies": {},
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  },
+  "lint-staged": {
+    "ios/**/*.{m,h}": [
+      "npx clang-format -style=file -i",
+      "git add"
+    ],
+    "*.js": "eslint"
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  }
 }
