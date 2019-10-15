@@ -1,0 +1,5 @@
+node_modules
+
+# These should eventually be linted as well
+ios/example/
+example/
