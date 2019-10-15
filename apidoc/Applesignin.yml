@@ -40,7 +40,7 @@ description: |
 extends: Titanium.Module
 since: "1.0.0"
 osver: {ios: {min: "13.0"}}
-platforms: [iphone, iPad]
+platforms: [iphone, ipad]
 
 properties:
 
@@ -81,13 +81,13 @@ properties:
     since: "1.0.0"
 
   - name: AUTHORIZATION_SCOPE_FULLNAME
-    summary: A scope that includes the user’s full name.
+    summary: A scope that includes the user's full name.
     type: Number
     permission: read-only
     since: "1.0.0"
 
   - name: AUTHORIZATION_SCOPE_EMAIL
-    summary: A scope that includes the user’s email address.
+    summary: A scope that includes the user's email address.
     type: Number
     permission: read-only
     since: "1.0.0"
@@ -105,7 +105,7 @@ properties:
     since: "1.0.0"
 
   - name: CREDENTIAL_STATE_NOT_FOUNFD
-    summary: The user can’t be found.
+    summary: The user can't be found.
     type: Number
     permission: read-only
     since: "1.0.0"
@@ -117,13 +117,13 @@ properties:
     since: "1.0.0"
 
   - name: USER_DETECTION_STATUS_UNSUPPORTED
-    summary: The system can’t determine this user’s status as a real person.
+    summary: The system can't determine this user's status as a real person.
     type: Number
     permission: read-only
     since: "1.0.0"
 
   - name: USER_DETECTION_STATUS_UNKNOWN
-    summary: The system hasn’t determined whether the user might be a real person.
+    summary: The system hasn't determined whether the user might be a real person.
     type: Number
     permission: read-only
     since: "1.0.0"
@@ -135,8 +135,8 @@ methods:
         After authorizarion it will fire event <Modules.Applesignin.login> event which tells success or failure of login.
     parameters:
       - name: scopes
-        summary: The contact information to be requested from the user during authentication.
-        type: Array<Modules.Applesignin.AUTHORIZATION_SCOPE_*>
+        summary: The contact information to be requested from the user during authentication. Use the Modules.Applesignin.AUTHORIZATION_SCOPE_* constant values to populate the array.
+        type: Array<Number>
 
   - name: getCredentialState
     summary: Returns the credential state for the given user.
@@ -187,7 +187,7 @@ properties:
     summary: An identifier associated with the authenticated user.
     type: String
   - name: email
-    summary: The user’s email address.
+    summary: The user's email address.
     type: String
   - name: state
     summary: A string that your app provided to the request that generated the credential.
@@ -202,7 +202,7 @@ properties:
     summary: Web Token that securely communicates information about the user to your app.
     type: String
   - name: authorizationCode
-    summary: A short-lived token used by your app for proof of authorization when interacting with the app’s server counterpart.
+    summary: A short-lived token used by your app for proof of authorization when interacting with the app's server counterpart.
     type: String
   - name: name
     summary: Name of user.
@@ -215,15 +215,15 @@ platforms: [iphone, ipad]
 since: "1.0.0"
 properties:
   - name: firstName
-    summary: Name bestowed upon an individual to differentiate them from other members of a group that share a family name (for example, “Johnathan”).
+    summary: Name bestowed upon an individual to differentiate them from other members of a group that share a family name (for example, "Johnathan").
     type: String
 
   - name: middleName
-    summary: Secondary name bestowed upon an individual to differentiate them from others that have the same given name (for example, “Maple”).
+    summary: Secondary name bestowed upon an individual to differentiate them from others that have the same given name (for example, "Maple").
     type: String
 
   - name: lastName
-    summary: Name bestowed upon an individual to denote membership in a group or family. (for example, “Appleseed”).
+    summary: Name bestowed upon an individual to denote membership in a group or family. (for example, "Appleseed").
     type: String
 
   - name: nickname
@@ -231,11 +231,11 @@ properties:
     type: String
 
   - name: namePrefix
-    summary: The portion of a name’s full form of address that precedes the name itself (for example, “Dr.,” “Mr.,” “Ms.”).
+    summary: The portion of a name's full form of address that precedes the name itself (for example, "Dr.," "Mr.," "Ms.").
     type: String
 
   - name: nameSuffix
-    summary: The portion of a name’s full form of address that follows the name itself (for example, “Esq.,” “Jr.,” “Ph.D.”).
+    summary: The portion of a name's full form of address that follows the name itself (for example, "Esq.," "Jr.," "Ph.D.").
     type: String
 
 ---
