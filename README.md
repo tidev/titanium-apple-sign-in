@@ -67,10 +67,24 @@ The login event with the user's `profile`.
 
 - [x] Add the following entitlements to your project:
 ```xml
-<key>com.apple.developer.applesignin</key>
-<array>
-  <string>Default</string>
-</array>
+<ios>
+	<!-- ... -->
+	
+	<plist>
+		<dict>
+			<!-- ... -->
+		</dict>
+	</plist>
+	
+	<entitlements>
+		<dict>
+			<key>com.apple.developer.applesignin</key>
+			<array>
+				<string>Default</string>
+			</array>
+		</dict>
+	</entitlements>
+</ios>
 ```
 - [x] Make sure your server is eligible to send mails to the Apple Sign In provider service.
 
