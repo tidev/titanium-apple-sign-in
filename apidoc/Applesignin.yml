@@ -16,34 +16,34 @@ description: |
     ### Configure iOS: Capabilities and Provisioning Profiles
     
     -   Required capabilities:
-      
-            <key>com.apple.developer.applesignin</key>
-            <array>
-              <string>Default</string>
-            </array>
+
+        ``` xml
+        <key>com.apple.developer.applesignin</key>
+        <array>
+          <string>Default</string>
+        </array>
+        ```
 
     -   Provisioning Profile entitled with 'Sign In with Apple' capability
-
 
     ### Accessing the Module
 
     -   Use `require` to access this module from JavaScript:
 
-            var AppleSignin = require('ti.applesignin');
+        ``` javascript
+        var AppleSignin = require('ti.applesignin');
+        ```
 
         The `AppleSignin` variable is a reference to the Module object.
 
     ### Example applications
     
     -   Example applications are located in the `example/ios` folder of the module:
-        
 extends: Titanium.Module
 since: "1.0.0"
 osver: {ios: {min: "13.0"}}
 platforms: [iphone, ipad]
-
 properties:
-
   - name: BUTTON_TYPE_DEFAULT
     summary: Default authorization button type. Use with <Modules.Applesignin.LoginButton.type>.
     type: Number
@@ -152,8 +152,8 @@ methods:
       - name: callback
         summary: Function to invoke on success or failure.
         type: Callback<CredentialStateResponse>
-events:
 
+events:
   - name: login
     summary: Fired at login.
     properties:
@@ -248,4 +248,3 @@ properties:
     summary: Possible values for the credential state of a user.
     type: Number
     constants: [Modules.Applesignin.CREDENTIAL_STATE_REVOKED, Modules.Applesignin.CREDENTIAL_STATE_AUTHORIZED, Modules.Applesignin.CREDENTIAL_STATE_NOT_FOUNFD]
-

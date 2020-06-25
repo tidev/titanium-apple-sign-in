@@ -1,12 +1,10 @@
 ---
 name: Modules.Applesignin.LoginButton
 summary: Built-in login button which can be added on view.
-description: |
 extends: Titanium.UI.View
 since: "1.0.0"
 osver: {ios: {min: "13.0"}}
 platforms: [iphone, ipad]
-
 properties:
   - name: type
     summary: Type for the authorization button.
@@ -23,10 +21,9 @@ properties:
     type: Number
 
 examples:
-
   - title: Login button to signin 
     example: |
-
+        ``` javascript
         var AppleSignin = require('ti.applesignin');
 
         var win = Ti.UI.createWindow({
@@ -58,3 +55,4 @@ examples:
 
         win.add(signInButton);
         win.open();
+        ```
