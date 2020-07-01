@@ -1,5 +1,5 @@
 const AppleSignin = require('ti.applesignin');
-var signInButton = AppleSignin.createLoginButton({
+const signInButton = AppleSignin.createLoginButton({
 	type: AppleSignin.BUTTON_TYPE_SIGNIN,
 	style: AppleSignin.BUTTON_STYLE_BLACK,
 	borderRadius: 10,

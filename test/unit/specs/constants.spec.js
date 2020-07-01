@@ -1,4 +1,4 @@
-let AppleSignin = require('ti.applesignin');
+const AppleSignin = require('ti.applesignin');
 
 describe('ti.applesignin', () => {
 	it('can be required', () => {
