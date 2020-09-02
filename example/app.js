@@ -19,7 +19,7 @@ var btn = Ti.UI.createButton({
 });
 
 btn.addEventListener('click', function () {
-    AppleSignIn.authorize();
+    AppleSignIn.authorize([ AppleSignIn.AUTHORIZATION_SCOPE_EMAIL, AppleSignIn.AUTHORIZATION_SCOPE_FULLNAME ]);
 });
 
 win.add(btn);
