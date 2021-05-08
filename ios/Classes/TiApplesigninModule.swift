@@ -77,6 +77,20 @@ class TiApplesigninModule: TiModule {
     authorizationController.performRequests()
   }
 
+  @objc(checkExistingAccounts:)
+  func checkExistingAccounts(arguments: Any?) {
+      // Prepare requests for both Apple ID and password providers.
+      let requests = [ASAuthorizationAppleIDProvider().createRequest(),
+                      ASAuthorizationPasswordProvider().createRequest()]
+      
+      // Create an authorization controller with the given requests.
+      let authorizationController = ASAuthorizationController(authorizationRequests: requests)
+      authorizationController.delegate = self
+      authorizationController.presentationContextProvider = self
+      authorizationController.performRequests()
+  }
+  
+
   @available(iOS 13.0, *)
   @objc(getCredentialState:)
   func getCredentialState(arguments: Array<Any>?) {
@@ -88,6 +102,15 @@ class TiApplesigninModule: TiModule {
     ASAuthorizationAppleIDProvider().getCredentialState(forUserID: userId) { (credentialState, error) in
       callback.call([["state": credentialState.rawValue]], thisObject: self)
     }
+  }
+}
+
+// MARK: ASAuthorizationControllerPresentationContextProviding
+@available(iOS 13.0, *)
+extension TiApplesigninModule: ASAuthorizationControllerPresentationContextProviding {
+
+  func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {
+    return TiApp().controller.view.window!
   }
 }
 
@@ -110,6 +133,11 @@ extension TiApplesigninModule: ASAuthorizationControllerDelegate {
   
   @available(iOS 13.0, *)
   func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
+    if let passwordCredential = authorization.credential as? ASPasswordCredential {
+      fireEvent("login", with: ["type": "password", "success": true, "user": passwordCredential.user, "password": passwordCredential.password])
+      return
+    }
+  
     guard let credential = authorization.credential as? ASAuthorizationAppleIDCredential else { return }
 
     var profile: [String: Any] = [
@@ -142,6 +170,6 @@ extension TiApplesigninModule: ASAuthorizationControllerDelegate {
       profile["authorizationCode"] = String(data: authorizationCode, encoding: .utf8)
     }
     
-    fireEvent("login", with: ["success": true, "profile": profile])
+    fireEvent("login", with: ["type": "apple", "success": true, "profile": profile])
   }
 }

@@ -14,6 +14,10 @@ var win = Ti.UI.createWindow({
     backgroundColor: '#fff'
 });
 
+win.addEventListener('open', () => {
+    AppleSignIn.checkExistingAccounts();
+});
+
 var btn = Ti.UI.createButton({
     title: 'Sign in with Apple'
 });

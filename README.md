@@ -30,6 +30,10 @@ var win = Ti.UI.createWindow({
   backgroundColor: '#fff'
 });
 
+win.addEventListener('open', () => {
+  AppleSignIn.checkExistingAccounts();
+});
+
 var btn = AppleSignIn.createLoginButton({ width: 280, height: 38 });
 
 btn.addEventListener('click', function () {
@@ -43,6 +47,10 @@ win.open();
 ## API's
 
 ### Methods
+
+#### `checkExistingAccounts()`
+
+Checks for existing accounts (if available)
 
 #### `createLoginButton()`
 

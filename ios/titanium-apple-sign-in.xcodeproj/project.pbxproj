@@ -40,6 +40,7 @@
 			files = (
 				B74EF4B024FFE02400058F91 /* TitaniumKit.xcframework in Frameworks */,
 				DB34CDE6207B9EBD005F8E8C /* Foundation.framework in Frameworks */,
+				3A511DE22646A816003FA080 /* TitaniumKit.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -145,7 +146,7 @@
 		DB52E2211E9CCD7000AAAEE0 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 1100;
+				LastUpgradeCheck = 1240;
 				TargetAttributes = {
 					DB52E2291E9CCD7000AAAEE0 = {
 						CreatedOnToolsVersion = 8.3;
@@ -230,6 +231,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -297,6 +299,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -375,6 +378,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.appcelerator.titanium-apple-sign-in";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_INCLUDE_PATHS = "$(SRCROOT)/Titanium";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -422,6 +426,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.appcelerator.titanium-apple-sign-in";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_INCLUDE_PATHS = "$(SRCROOT)/Titanium";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
