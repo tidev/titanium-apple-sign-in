@@ -134,7 +134,7 @@ extension TiApplesigninModule: ASAuthorizationControllerDelegate {
   @available(iOS 13.0, *)
   func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
     if let passwordCredential = authorization.credential as? ASPasswordCredential {
-      fireEvent("login", with: ["type": "password", "success": true, "user": passwordCredential.user, "password": passwordCredential.password])
+      fireEvent("login", with: ["credentialType": "password", "success": true, "user": passwordCredential.user, "password": passwordCredential.password])
       return
     }
   
@@ -170,6 +170,6 @@ extension TiApplesigninModule: ASAuthorizationControllerDelegate {
       profile["authorizationCode"] = String(data: authorizationCode, encoding: .utf8)
     }
     
-    fireEvent("login", with: ["type": "apple", "success": true, "profile": profile])
+    fireEvent("login", with: ["credentialType": "apple", "success": true, "profile": profile])
   }
 }
