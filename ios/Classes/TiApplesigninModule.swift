@@ -79,17 +79,15 @@ class TiApplesigninModule: TiModule {
 
   @objc(checkExistingAccounts:)
   func checkExistingAccounts(arguments: Any?) {
-    #if !targetEnvironment(macCatalyst)
-      // Prepare requests for both Apple ID and password providers.
-      let requests = [ASAuthorizationAppleIDProvider().createRequest(),
-                      ASAuthorizationPasswordProvider().createRequest()]
-      
-      // Create an authorization controller with the given requests.
-      let authorizationController = ASAuthorizationController(authorizationRequests: requests)
-      authorizationController.delegate = self
-      authorizationController.presentationContextProvider = self
-      authorizationController.performRequests()
-    #endif
+    // Prepare requests for both Apple ID and password providers.
+    let requests = [ASAuthorizationAppleIDProvider().createRequest(),
+                    ASAuthorizationPasswordProvider().createRequest()]
+    
+    // Create an authorization controller with the given requests.
+    let authorizationController = ASAuthorizationController(authorizationRequests: requests)
+    authorizationController.delegate = self
+    authorizationController.presentationContextProvider = self
+    authorizationController.performRequests()
   }
   
 
