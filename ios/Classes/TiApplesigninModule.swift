@@ -86,7 +86,6 @@ class TiApplesigninModule: TiModule {
     // Create an authorization controller with the given requests.
     let authorizationController = ASAuthorizationController(authorizationRequests: requests)
     authorizationController.delegate = self
-    authorizationController.presentationContextProvider = self
     authorizationController.performRequests()
   }
   
@@ -102,15 +101,6 @@ class TiApplesigninModule: TiModule {
     ASAuthorizationAppleIDProvider().getCredentialState(forUserID: userId) { (credentialState, error) in
       callback.call([["state": credentialState.rawValue]], thisObject: self)
     }
-  }
-}
-
-// MARK: ASAuthorizationControllerPresentationContextProviding
-@available(iOS 13.0, *)
-extension TiApplesigninModule: ASAuthorizationControllerPresentationContextProviding {
-
-  func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {
-    return TiApp().controller.view.window!
   }
 }
 
