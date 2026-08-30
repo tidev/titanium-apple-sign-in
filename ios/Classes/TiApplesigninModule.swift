@@ -9,7 +9,7 @@ import AuthenticationServices
 import UIKit
 import TitaniumKit
 
-@available(iOS 13.0, *)
+@available(iOS 15.0, *)
 @objc(TiApplesigninModule)
 class TiApplesigninModule: TiModule {
   
@@ -45,6 +45,32 @@ class TiApplesigninModule: TiModule {
     
   @objc let USER_DETECTION_STATUS_UNKNOWN = ASUserDetectionStatus.unknown
 
+  // MARK: Private state
+
+  private var isDeletingAccount = false
+  private var deleteAccountCallback: KrollCallback?
+  private var deleteAccountBackendURL: String?
+
+  // MARK: Lifecycle
+
+  override func startup() {
+    super.startup()
+    NotificationCenter.default.addObserver(
+      self,
+      selector: #selector(handleCredentialRevoked),
+      name: ASAuthorizationAppleIDProvider.credentialRevokedNotification,
+      object: nil
+    )
+  }
+
+  deinit {
+    NotificationCenter.default.removeObserver(self)
+  }
+
+  @objc private func handleCredentialRevoked() {
+    fireEvent("credentialRevoked", with: [:])
+  }
+
     
   // MARK: Proxy configuration
 
@@ -57,16 +83,20 @@ class TiApplesigninModule: TiModule {
   }
   
   // MARK: Public API's
-
-  @available(iOS 13.0, *)
   @objc(authorize:)
   func authorize(arguments: Array<Any>?) {
     let appleIDProvider = ASAuthorizationAppleIDProvider()
     let request = appleIDProvider.createRequest()
     
-    if let params = arguments?.first as? [String: Any], let scopes = params["scopes"] as? [String] {
-      scopes.forEach { scope in
-        request.requestedScopes?.append(ASAuthorization.Scope(scope))
+    if let params = arguments?.first as? [String: Any] {
+      // Nonce support for backend safety (ex: Firebase)
+      if let nonce = params["nonce"] as? String {
+        request.nonce = nonce
+      }
+      if let scopes = params["scopes"] as? [String] {
+        request.requestedScopes = scopes.map { ASAuthorization.Scope($0) }
+      } else {
+        request.requestedScopes = [.fullName, .email]
       }
     } else {
       request.requestedScopes = [.fullName, .email]
@@ -89,8 +119,6 @@ class TiApplesigninModule: TiModule {
     authorizationController.performRequests()
   }
   
-
-  @available(iOS 13.0, *)
   @objc(getCredentialState:)
   func getCredentialState(arguments: Array<Any>?) {
     guard let arguments = arguments,
@@ -102,15 +130,117 @@ class TiApplesigninModule: TiModule {
       callback.call([["state": credentialState.rawValue]], thisObject: self)
     }
   }
+
+  // MARK: Delete Account
+
+  /**
+   * Deletes the user account by:
+   * 1. Re-authenticating with Apple to get a fresh authorizationCode
+   * 2. Sending the code to your backend which calls Apple's revoke endpoint
+   * 3. Returning success/failure via callback
+   *
+   * JS usage:
+   *   appleSignIn.deleteAccount({
+   *     backendURL: 'https://yourbackend.com/apple/revoke'
+   *   }, function(result) {
+   *     if (result.success) { ... }
+   *   });
+   */
+  @objc(deleteAccount:)
+  func deleteAccount(arguments: Array<Any>?) {
+    guard let arguments = arguments,
+          arguments.count == 2,
+          let params = arguments[0] as? [String: Any],
+          let backendURL = params["backendURL"] as? String,
+          let callback = arguments[1] as? KrollCallback else {
+      return
+    }
+
+    self.deleteAccountCallback = callback
+    self.deleteAccountBackendURL = backendURL
+    self.isDeletingAccount = true
+
+    let appleIDProvider = ASAuthorizationAppleIDProvider()
+    let request = appleIDProvider.createRequest()
+    request.requestedScopes = []
+
+    let authorizationController = ASAuthorizationController(authorizationRequests: [request])
+    authorizationController.delegate = self
+    authorizationController.presentationContextProvider = self
+    authorizationController.performRequests()
+  }
+
+  private func revokeAndFinish(authorizationCode: String) {
+    guard let backendURL = deleteAccountBackendURL,
+          let url = URL(string: backendURL) else {
+      fireDeleteCallback(success: false, error: "Invalid backend URL")
+      return
+    }
+
+    var urlRequest = URLRequest(url: url)
+    urlRequest.httpMethod = "POST"
+    urlRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
+
+    do {
+      urlRequest.httpBody = try JSONSerialization.data(withJSONObject: [
+        "authorization_code": authorizationCode
+      ])
+    } catch {
+      fireDeleteCallback(success: false, error: "Failed to serialize request body")
+      return
+    }
+
+    URLSession.shared.dataTask(with: urlRequest) { [weak self] data, response, error in
+      guard let self = self else { return }
+
+      if let error = error {
+        self.fireDeleteCallback(success: false, error: error.localizedDescription)
+        return
+      }
+
+      guard let data = data,
+            let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
+            let success = json["success"] as? Bool else {
+        self.fireDeleteCallback(success: false, error: "Invalid response from backend")
+        return
+      }
+
+      if success {
+        self.fireDeleteCallback(success: true, error: nil)
+      } else {
+        let errorMsg = json["error"] as? String ?? "Unknown error from backend"
+        self.fireDeleteCallback(success: false, error: errorMsg)
+      }
+    }.resume()
+  }
+
+  private func fireDeleteCallback(success: Bool, error: String?) {
+    DispatchQueue.main.async { [weak self] in
+      guard let self = self else { return }
+      var result: [String: Any] = ["success": success]
+      if let error = error { result["error"] = error }
+      self.deleteAccountCallback?.call([result], thisObject: self)
+      self.deleteAccountCallback = nil
+      self.deleteAccountBackendURL = nil
+      self.isDeletingAccount = false
+    }
+  }
 }
 
 // MARK: ASAuthorizationControllerDelegate
-
-@available(iOS 13.0, *)
 extension TiApplesigninModule: ASAuthorizationControllerDelegate {
-  
-  @available(iOS 13.0, *)
+
   func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
+    if isDeletingAccount {
+      let nsError = error as NSError
+      let cancelled = [1_000, 1_001].contains(nsError.code)
+      fireDeleteCallback(
+        success: false,
+        error: cancelled ? "User cancelled" : error.localizedDescription
+      )
+      return
+    }
+
     let error = error as NSError
     let cancelErrorCodes = [1_000, 1_001]
 
@@ -120,8 +250,7 @@ extension TiApplesigninModule: ASAuthorizationControllerDelegate {
     }
     fireEvent("login", with: ["success": false, "cancelled": false, "error": error.localizedDescription])
   }
-  
-  @available(iOS 13.0, *)
+
   func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
     if let passwordCredential = authorization.credential as? ASPasswordCredential {
       fireEvent("login", with: ["credentialType": "password", "success": true, "user": passwordCredential.user, "password": passwordCredential.password])
@@ -129,6 +258,16 @@ extension TiApplesigninModule: ASAuthorizationControllerDelegate {
     }
   
     guard let credential = authorization.credential as? ASAuthorizationAppleIDCredential else { return }
+
+    if isDeletingAccount {
+      guard let authorizationCode = credential.authorizationCode,
+            let codeString = String(data: authorizationCode, encoding: .utf8) else {
+        fireDeleteCallback(success: false, error: "Failed to obtain authorization code from Apple")
+        return
+      }
+      revokeAndFinish(authorizationCode: codeString)
+      return
+    }
 
     var profile: [String: Any] = [
       "userId": credential.user,
@@ -161,5 +300,22 @@ extension TiApplesigninModule: ASAuthorizationControllerDelegate {
     }
     
     fireEvent("login", with: ["credentialType": "apple", "success": true, "profile": profile])
+  }
+}
+
+// MARK: ASAuthorizationControllerPresentationContextProviding
+
+extension TiApplesigninModule: ASAuthorizationControllerPresentationContextProviding {
+  func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {
+    if #available(iOS 15.0, *) {
+      guard let scene = UIApplication.shared.connectedScenes
+              .first(where: { $0.activationState == .foregroundActive }) as? UIWindowScene,
+            let window = scene.windows.first(where: { $0.isKeyWindow }) else {
+        return UIWindow()
+      }
+        return window
+    } else {
+      return UIApplication.shared.windows.first { $0.isKeyWindow } ?? UIWindow()
+    }
   }
 }
