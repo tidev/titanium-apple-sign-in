@@ -1,0 +1,44 @@
+name: iOS Build
+
+on:
+  pull_request:
+    paths-ignore:
+      - 'apidoc/**'
+      - '**.md'
+  workflow_dispatch:
+
+jobs:
+  ios:
+    runs-on: macos-latest
+    name: iOS
+    env:
+      SDK_VERSION: 13.4.1.GA
+      MODULE_ID: ti.applesignin
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Setup node
+        uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+
+      - name: Install Titanium CLI
+        run: npm i -g titanium
+
+      - name: Install Titanium SDK
+        run: ti sdk install ${{ env.SDK_VERSION }}
+
+      - name: Point the Xcode project at the installed SDK
+        run: sed -i .bak 's/TITANIUM_SDK_VERSION = .*/TITANIUM_SDK_VERSION = ${{ env.SDK_VERSION }}/' ios/titanium.xcconfig
+
+      - name: Build module
+        run: ti build -p ios --build-only
+        working-directory: ios
+
+      - name: Upload module artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: ${{ env.MODULE_ID }}-ios
+          path: ios/dist/${{ env.MODULE_ID }}-iphone-*.zip
+          if-no-files-found: error
