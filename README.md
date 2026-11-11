@@ -56,9 +56,21 @@ Checks for existing accounts (if available)
 
 Creates a new localized login button.
 
-#### `authorize({ scopes })`
+#### `authorize({ scopes, nonce })`
 
 Starts an authorization flow with an optional array of scoped. Defaults to all scopes (`fullName` and `email`).
+
+The optional `nonce` is embedded by Apple, unchanged, in the `nonce` claim of the identity token, so your server can
+check that the token belongs to this request. Apple does not hash it: the common scheme (Firebase Authentication and
+most server libraries) is to pass the SHA-256 hash of a random raw nonce and send the raw nonce to your server along
+with the `identityToken`:
+
+```js
+const rawNonce = Ti.Platform.createUUID();
+
+AppleSignIn.authorize({ nonce: Ti.Utils.sha256(rawNonce) });
+// In the "login" event, send event.profile.identityToken and rawNonce to your server
+```
 
 #### `getCredentialState(userId, callback)`
 

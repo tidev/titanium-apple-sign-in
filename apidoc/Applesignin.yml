@@ -133,10 +133,21 @@ methods:
     summary: Request Apple ID authorization.
     description: |
         After authorizarion it will fire event <Modules.Applesignin.login> event which tells success or failure of login.
+
+        Apple copies the `nonce` into the `nonce` claim of the identity token as is, without hashing it. The usual
+        scheme (used by Firebase Authentication and most server libraries) is to generate a random raw nonce, pass
+        its SHA-256 hash (lowercase hex) as `nonce`, and send the raw nonce to the server together with the identity
+        token; the server hashes the raw nonce and compares the result with the claim:
+        `AppleSignIn.authorize({ nonce: Ti.Utils.sha256(rawNonce) })`. The `nonce` parameter is available since 3.2.0.
     parameters:
       - name: scopes
         summary: The contact information to be requested from the user during authentication. Use the Modules.Applesignin.AUTHORIZATION_SCOPE_* constant values to populate the array.
         type: Array<Number>
+
+      - name: nonce
+        summary: A string Apple includes in the identity token, so a server can check that the token was issued for this request.
+        type: String
+        optional: true
 
   - name: getCredentialState
     summary: Returns the credential state for the given user.
