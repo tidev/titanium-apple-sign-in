@@ -1,5 +1,10 @@
 var AppleSignIn = require('ti.applesignin');
 
+// A new random nonce for each request. Send the raw value to your server with the
+// identity token: Apple puts what authorize() is given (here its SHA-256 hash) in the
+// token's "nonce" claim.
+var rawNonce;
+
 AppleSignIn.addEventListener('login', function (event) {
     if (!event.success) {
         alert(event.error);
@@ -23,7 +28,8 @@ var btn = Ti.UI.createButton({
 });
 
 btn.addEventListener('click', function () {
-    AppleSignIn.authorize([ AppleSignIn.AUTHORIZATION_SCOPE_EMAIL, AppleSignIn.AUTHORIZATION_SCOPE_FULLNAME ]);
+    rawNonce = Ti.Platform.createUUID();
+    AppleSignIn.authorize({ nonce: Ti.Utils.sha256(rawNonce) });
 });
 
 win.add(btn);

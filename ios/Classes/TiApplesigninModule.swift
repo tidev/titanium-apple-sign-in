@@ -71,6 +71,10 @@ class TiApplesigninModule: TiModule {
     } else {
       request.requestedScopes = [.fullName, .email]
     }
+
+    if let params = arguments?.first as? [String: Any], let nonce = params["nonce"] as? String {
+      request.nonce = nonce
+    }
     
     let authorizationController = ASAuthorizationController(authorizationRequests: [request])
     authorizationController.delegate = self
