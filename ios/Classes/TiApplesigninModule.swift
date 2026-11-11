@@ -65,9 +65,7 @@ class TiApplesigninModule: TiModule {
     let request = appleIDProvider.createRequest()
     
     if let params = arguments?.first as? [String: Any], let scopes = params["scopes"] as? [String] {
-      scopes.forEach { scope in
-        request.requestedScopes?.append(ASAuthorization.Scope(scope))
-      }
+      request.requestedScopes = scopes.map { ASAuthorization.Scope($0) }
     } else {
       request.requestedScopes = [.fullName, .email]
     }
